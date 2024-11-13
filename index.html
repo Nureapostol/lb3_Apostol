@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея зображень</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .gallery img {
+            width: 150px;
+            height: auto;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 2px solid;
+        }
+
+        .gallery img.selected {
+            border-color: red;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .settings {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .settings label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Галерея зображень</h1>
+
+    <div class="gallery">
+        <img src="1.jpg" alt="Image 1">
+        <img src="2.jpg" alt="Image 2">
+        <img src="3.jpg" alt="Image 3">
+        <img src="4.jpeg" alt="Image 4">
+    </div>
+
+    <div class="controls">
+        <button onclick="moveUp()">Вище</button>
+        <button onclick="moveDown()">Нижче</button>
+    </div>
+
+    <div class="settings">
+        <label>
+            Ширина:
+            <input type="number" id="width" placeholder="Ширина (пікселі)">
+        </label>
+        <label>
+            Висота:
+            <input type="number" id="height" placeholder="Висота (пікселі)">
+        </label>
+        <label>
+            Товщина рамки:
+            <input type="number" id="borderWidth" placeholder="Товщина рамки (пікселі)">
+        </label>
+        <label>
+            Альтернативний текст:
+            <input type="text" id="altText" placeholder="Альтернативний текст">
+        </label>
+        <button onclick="applySettings()">Застосувати</button>
+    </div>
+
+    <script>
+        let selectedImage = null;
+
+        document.querySelectorAll('.gallery img').forEach(img => {
+            img.addEventListener('click', function () {
+                if (selectedImage) {
+                    selectedImage.classList.remove('selected');
+                }
+                selectedImage = img;
+                img.classList.add('selected');
+            });
+        });
+
+        function moveUp() {
+            if (selectedImage) {
+                const previous = selectedImage.previousElementSibling;
+                if (previous) {
+                    selectedImage.parentNode.insertBefore(selectedImage, previous);
+                }
+            }
+        }
+
+        function moveDown() {
+            if (selectedImage) {
+                const next = selectedImage.nextElementSibling;
+                if (next) {
+                    selectedImage.parentNode.insertBefore(next, selectedImage);
+                }
+            }
+        }
+
+        function applySettings() {
+            if (selectedImage) {
+                const width = document.getElementById('width').value;
+                const height = document.getElementById('height').value;
+                const borderWidth = document.getElementById('borderWidth').value;
+                const altText = document.getElementById('altText').value;
+
+                if (width) selectedImage.style.width = width + 'px';
+                if (height) selectedImage.style.height = height + 'px';
+                if (borderWidth) selectedImage.style.borderWidth = borderWidth + 'px';
+                if (altText) selectedImage.alt = altText;
+            } else {
+                alert("Будь ласка, виберіть зображення для налаштування.");
+            }
+        }
+    </script>
+</body>
+</html>
